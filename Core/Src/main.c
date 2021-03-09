@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal.h"
+#include "stm32f4xx_hal_uart.h"
 #include "stdio.h"
 #include "stdbool.h"
 /* USER CODE END Includes */
@@ -57,6 +58,9 @@ UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart6;
 
 /* USER CODE BEGIN PV */
+uint32_t data5[];
+uint32_t data6[];
+
 
 /* USER CODE END PV */
 
@@ -94,7 +98,10 @@ HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_RESET);
 HAL_Delay(1000);
 HAL_GPIO_WritePin(GPIOC, GPIO_PIN_2, GPIO_PIN_SET);
 HAL_Delay(1000);
-
+HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_RESET);
+HAL_Delay(1000);
+HAL_GPIO_WritePin(GPIOC, GPIO_PIN_1, GPIO_PIN_SET);
+HAL_Delay(1000);
 }
 
 
@@ -107,7 +114,8 @@ HAL_Delay(1000);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+char data5[] = "UART5 Test!";
+char data6[] = "UART6 Test!";
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -139,6 +147,11 @@ int main(void)
   MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+  HAL_UART_Transmit(&huart5, data5, sizeof(data5), 100);
+  HAL_Delay(100);
+  HAL_UART_Transmit(&huart6, data6, sizeof(data6), 100);
+  HAL_Delay(100);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -154,9 +167,11 @@ int main(void)
 	  	  servo_angle(0);
 	  	  HAL_Delay(1000);
 	  	  servo_angle(100);
-	  	  HAL_Delay(2000);
-	  	  servo_angle(0);
-	  	  HAL_Delay(50);
+	  	  HAL_Delay(1000);
+
+	  relay_test();
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
